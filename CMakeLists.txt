@@ -31,6 +31,7 @@ FetchContent_Declare(
     URL https://github.com/zeux/pugixml/releases/download/v1.14/pugixml-1.14.tar.gz
 )
 
+FetchContent_MakeAvailable(pugixml)
 
 FetchContent_Declare(
     box2d
