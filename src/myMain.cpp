@@ -1,6 +1,9 @@
 #include "myMain.h"
+#include <iostream>
+
+using namespace std;
 
 int myMain() {
-	std::cout << "slt";
+	cout << "slt";
 	return 0;
 }
