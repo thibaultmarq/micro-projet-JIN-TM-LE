@@ -1,15 +1,18 @@
 #include "myMain.h"
+#include "box2d/box2d.h"
 #include <iostream>
 #include "pugixml.hpp"
 #include "string_view"
 #include "Panel.h"
 #include "Player.h"
+#include <GameManager.h>
 
 using namespace std;
 using namespace literals;
 
 
 int myMain() {
+    /*
 	sf::RenderWindow mWindow;
 	mWindow.create(sf::VideoMode(800, 600), "My window");
     Panel panel;
@@ -34,5 +37,9 @@ int myMain() {
         panel.Render(mWindow);
         mWindow.display();
     }
+*/
+	
+	GameManager game;
+	game.run();
 	return 0;
 }
