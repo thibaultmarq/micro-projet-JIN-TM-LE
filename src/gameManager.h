@@ -2,13 +2,15 @@
 #include "SFML/Graphics.hpp"
 #include <Player.h>
 #include "box2d/box2d.h"
+#include "Panel.h"
 
 class GameManager {
 private:
 
-	b2World world{b2Vec2(0.f,5.f)};
+	b2World world{b2Vec2(0.f,10.f)};
 
 	Player player{ &world };
+	Panel panel;
 
 	bool jump{ false };
 	bool left{ false };
@@ -24,7 +26,7 @@ private:
 
 	static const sf::Time TimePerFrame;
 
-	sf::RenderWindow window{ sf::VideoMode{640,480}, "Splerm", sf::Style::Close };
+	sf::RenderWindow window{ sf::VideoMode{800,600}, "Splerm", sf::Style::Close };
 
 public:
 	void run();

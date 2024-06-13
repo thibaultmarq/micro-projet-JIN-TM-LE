@@ -10,7 +10,7 @@ Player::Player(b2World* world)
 	playerBody = world->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(10, 10);
+	dynamicBox.SetAsBox(20, 20);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -40,7 +40,7 @@ b2Vec2 Player::getCoordinates() const
 
 void Player::setCoordinates(float xpos, float ypos)
 {
-	target.move(xpos, ypos);
+	target.setPosition(xpos, ypos);
 
 }
 

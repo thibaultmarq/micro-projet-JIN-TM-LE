@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-const float GameManager::playerSpeed = 50.f;
+const float GameManager::playerSpeed = 0.f;
 const sf::Time GameManager::TimePerFrame = sf::seconds(1.f / 60.f);
 
 void GameManager::processEvents()
@@ -51,6 +51,7 @@ void GameManager::render()
 {
 	window.clear();
 	player.render(window);
+	panel.Render(window);
 	window.display();
 }
 
@@ -71,6 +72,9 @@ void GameManager::run()
 	window.setVerticalSyncEnabled(true);
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	
+	panel.AddSurface(0, 500, 500, 10, SurfaceType::SWIMMABLE, world);
+
 	while (window.isOpen()) {
 
 		sf::Time elapsedTime = clock.restart();
