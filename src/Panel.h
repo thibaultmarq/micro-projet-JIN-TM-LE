@@ -9,4 +9,5 @@ public:
 	Panel() = default;
 	void Render(sf::RenderTarget& window) const;
 	void AddSurface(float x, float y, float h, float w, SurfaceType surfaceType, b2World& world);
+	bool checkPlayerDryTouch(const b2Body* playerBody) const;
 };

@@ -19,9 +19,13 @@ public :
 	
 	
 	b2Vec2 getCoordinates() const;
+<<<<<<< Updated upstream
 	b2Vec2 getVelocity() const;
 
 
+=======
+	b2Body* getBody();
+>>>>>>> Stashed changes
 	void setCoordinates(float xpos, float ypos);
 	void setVelocity(float xspeed, float yspeed);
 

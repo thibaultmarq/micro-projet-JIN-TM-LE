@@ -43,7 +43,15 @@ void GameManager::update(sf::Time elapsedTime)
 
 	b2Vec2 cur_coords = player.getCoordinates();
 
+<<<<<<< Updated upstream
 	player.setCoordinates(cur_coords.x , cur_coords.y);
+=======
+	player.setCoordinates(cur_coords.x + new_speed.x * elapsedTime.asSeconds(), cur_coords.y + new_speed.y * elapsedTime.asSeconds());
+	if (panel.checkPlayerDryTouch(player.getBody())) {
+		
+		window.close();
+	}
+>>>>>>> Stashed changes
 }
 
 void GameManager::render()
@@ -76,6 +84,7 @@ void GameManager::run()
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	
 	panel.AddSurface(0, 500, 500, 10, SurfaceType::SWIMMABLE, world);
+	panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
 
 	while (window.isOpen()) {
 

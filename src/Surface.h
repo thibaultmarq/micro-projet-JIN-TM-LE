@@ -8,7 +8,10 @@ private:
 	sf::Vector2f size;
 	SurfaceType surfaceType;
 	b2Body* body;
+	sf::RectangleShape target;
 public:
 	void Render(sf::RenderTarget& window) const;
-	Surface(float x, float y, float h, float w, SurfaceType surfaceType, b2Body* body);
+	Surface( float h, float w, SurfaceType surfaceType, b2Body* body);
+	SurfaceType getType();
+	b2Body* getBody();
 };

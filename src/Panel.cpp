@@ -20,17 +20,28 @@ void Panel::AddSurface(float x, float y, float h, float w ,SurfaceType surfaceTy
 	b2Body * body = world.CreateBody(&bodyDef);
 	
 	
-	dynamicBox.SetAsBox(h, w);
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
+
 
 	b2PolygonShape groundBox;
 	groundBox.SetAsBox(h, w);
 	body->CreateFixture(&groundBox, 0.0f);
 
 	
-	Surface surf(x, y,h,w, surfaceType, body);
+	Surface surf(h,w, surfaceType, body);
+
 	level.push_back(surf);
+}
+
+bool Panel::checkPlayerDryTouch( const b2Body* playerBody) const {
+	for (auto c : level) {
+		if (c.getBody()->GetContactList() != nullptr) {
+			printf("coucou %p , %p \n", playerBody, c.getBody()->GetContactList()->other);
+		}
+		
+		if (c.getType() == SurfaceType::DRY && c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == playerBody) {
+			printf("oui \n");
+				return true;
+		}
+	}
+	return false;
 }

@@ -6,7 +6,6 @@ Player::Player(b2World* world)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(50, 50);
 	playerBody = world->CreateBody(&bodyDef);
 	playerBody->SetFixedRotation(true);
 
@@ -50,6 +49,7 @@ void Player::setCoordinates(float xpos, float ypos)
 	target.setPosition(xpos, ypos);
 
 }
+<<<<<<< Updated upstream
 
 void Player::setVelocity(float xspeed, float yspeed)
 {	
@@ -80,3 +80,8 @@ bool Player::isGrounded() const
 	return ret;
 }
 
+=======
+b2Body* Player::getBody() {
+	return playerBody;
+}
+>>>>>>> Stashed changes
