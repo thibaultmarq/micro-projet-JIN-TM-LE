@@ -83,7 +83,6 @@ void GameManager::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	
-	panel.AddSurface(0, 500, 500, 10, SurfaceType::SWIMMABLE, world);
 	panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
 
 	while (window.isOpen()) {

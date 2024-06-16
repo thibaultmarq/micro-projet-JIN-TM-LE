@@ -6,6 +6,7 @@ Player::Player(b2World* world)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(150, 50);
 	playerBody = world->CreateBody(&bodyDef);
 	playerBody->SetFixedRotation(true);
 
