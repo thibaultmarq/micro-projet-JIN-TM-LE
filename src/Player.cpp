@@ -49,14 +49,25 @@ void Player::setCoordinates(float xpos, float ypos)
 	target.setPosition(xpos, ypos);
 
 }
-<<<<<<< Updated upstream
 
 void Player::setVelocity(float xspeed, float yspeed)
 {	
+	b2Vec2 vel = playerBody->GetLinearVelocity();
 	b2Vec2 goal{ xspeed , -yspeed };
-	float mass = playerBody->GetMass();
-	goal *= mass;
-	playerBody->ApplyLinearImpulseToCenter(goal, true);
+
+	if (xspeed == 0)
+		goal.x = vel.x;
+	if (yspeed == 0)
+		goal.y = vel.y;
+
+	printf("New velocity : (%f, %f)\n", goal.x, goal.y);
+	playerBody->SetLinearVelocity(goal);
+
+}
+
+void Player::testTeleport(float xpos, float ypos)
+{
+	playerBody->SetTransform(b2Vec2(xpos, ypos),0);
 
 }
 
@@ -80,8 +91,7 @@ bool Player::isGrounded() const
 	return ret;
 }
 
-=======
 b2Body* Player::getBody() {
 	return playerBody;
 }
->>>>>>> Stashed changes
+

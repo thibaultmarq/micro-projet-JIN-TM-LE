@@ -39,19 +39,16 @@ void GameManager::update(sf::Time elapsedTime)
 	if (right)
 		player.setVelocity(playerSpeed, 0);
 	if (jump)
-		player.setVelocity(0, playerSpeed);
+		player.setVelocity(0, 30000);
 
 	b2Vec2 cur_coords = player.getCoordinates();
 
-<<<<<<< Updated upstream
 	player.setCoordinates(cur_coords.x , cur_coords.y);
-=======
-	player.setCoordinates(cur_coords.x + new_speed.x * elapsedTime.asSeconds(), cur_coords.y + new_speed.y * elapsedTime.asSeconds());
+
 	if (panel.checkPlayerDryTouch(player.getBody())) {
 		
 		window.close();
 	}
->>>>>>> Stashed changes
 }
 
 void GameManager::render()
@@ -72,6 +69,8 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 		right = keyState;
 	else if (key == sf::Keyboard::Q)
 		left = keyState;
+	else if (key == sf::Keyboard::K)
+		player.testTeleport(150, 150);
 	//}
 
 }
@@ -84,7 +83,7 @@ void GameManager::run()
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	
 	panel.AddSurface(0, 500, 500, 10, SurfaceType::SWIMMABLE, world);
-	panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
+	//panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
 
 	while (window.isOpen()) {
 
