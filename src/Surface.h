@@ -12,6 +12,6 @@ private:
 public:
 	void Render(sf::RenderTarget& window) const;
 	Surface( float h, float w, SurfaceType surfaceType, b2Body* body);
-	SurfaceType getType();
-	b2Body* getBody();
+	SurfaceType getType() const;
+	b2Body* getBody() const;
 };

@@ -100,10 +100,14 @@ void GameManager::run()
 	window.setVerticalSyncEnabled(true);
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
 	view.setSize(50,50);
 
-	panel.AddSurface(0, 5, 5, 1, SurfaceType::SWIMMABLE, world);
-	//panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
+	
+	
+	panel.AddSurface(0, 500, 250, 10, SurfaceType::SWIMMABLE, world);
+	panel.AddSurface(250, 500, 250, 10, SurfaceType::DRY, world);
+
 
 
 	while (window.isOpen()) {
