@@ -6,12 +6,12 @@ Player::Player(b2World* world)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(150, 50);
+	bodyDef.position.Set(0.5, 0.5);
 	playerBody = world->CreateBody(&bodyDef);
 	playerBody->SetFixedRotation(true);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(20, 20);
+	dynamicBox.SetAsBox(0.005f, 0.005f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -20,8 +20,8 @@ Player::Player(b2World* world)
 	playerBody->CreateFixture(&fixtureDef);
 
 
-	target.setPosition(sf::Vector2f(50,50));
-	target.setRadius(20);
+	target.setPosition(sf::Vector2f(5,5));
+	target.setRadius(0.5f);
 	target.setFillColor(sf::Color::White);
 
 }

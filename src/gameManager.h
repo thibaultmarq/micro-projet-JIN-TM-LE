@@ -7,7 +7,7 @@
 class GameManager {
 private:
 
-	b2World world{b2Vec2(0.f,200.f)};
+	b2World world{b2Vec2(0.f,20.f)};
 
 	Player player{ &world };
 	Panel panel;
@@ -27,6 +27,8 @@ private:
 	static const sf::Time TimePerFrame;
 
 	sf::RenderWindow window{ sf::VideoMode{800,600}, "Splerm", sf::Style::Close };
+	sf::View view;
+
 
 public:
 	void run();

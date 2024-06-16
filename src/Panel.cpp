@@ -32,16 +32,16 @@ void Panel::AddSurface(float x, float y, float h, float w ,SurfaceType surfaceTy
 	level.push_back(surf);
 }
 
-bool Panel::checkPlayerDryTouch( const b2Body* playerBody) const {
+SurfaceType Panel::checkPlayerTouch( const b2Body* playerBody) const {
 	for (auto c : level) {
 		if (c.getBody()->GetContactList() != nullptr) {
 			//printf("coucou %p , %p \n", playerBody, c.getBody()->GetContactList()->other);
 		}
 		
-		if (c.getType() == SurfaceType::DRY && c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == playerBody) {
+		if (c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == playerBody) {
 			//printf("oui \n");
-				return true;
+				return c.getType();
 		}
 	}
-	return false;
+	return SurfaceType::TOUCHABLE;
 }

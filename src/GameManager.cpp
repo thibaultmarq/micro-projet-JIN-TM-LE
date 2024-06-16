@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-const float GameManager::playerSpeed = 500.f;
+const float GameManager::playerSpeed = 2.f;
 const sf::Time GameManager::TimePerFrame = sf::seconds(1.f / 60.f);
 
 void GameManager::processEvents()
@@ -34,21 +34,34 @@ void GameManager::processEvents()
 
 void GameManager::update(sf::Time elapsedTime)
 {	
-	if (left)
-		player.setVelocity(-playerSpeed,0);
-	if (right)
-		player.setVelocity(playerSpeed, 0);
-	if (jump)
-		player.setVelocity(0, 30000);
+	SurfaceType surface = panel.checkPlayerTouch(player.getBody());
+	switch (surface)
+	{
+	case SurfaceType::DRY:
+			window.close();
+			break;
+
+	case SurfaceType::SWIMMABLE:
+		if (left)
+			player.setVelocity(-playerSpeed,0);
+		if (right)
+			player.setVelocity(playerSpeed, 0);
+		if (jump) {
+			player.setVelocity(0, playerSpeed * 10);
+		}
+		break;
+
+	case SurfaceType::TOUCHABLE:
+		break;
+
+	default:
+		break;
+	}
 
 	b2Vec2 cur_coords = player.getCoordinates();
 
-	player.setCoordinates(cur_coords.x , cur_coords.y);
+	player.setCoordinates(cur_coords.x, cur_coords.y);
 
-	if (panel.checkPlayerDryTouch(player.getBody())) {
-		
-		window.close();
-	}
 }
 
 void GameManager::render()
@@ -56,6 +69,11 @@ void GameManager::render()
 	window.clear();
 	player.render(window);
 	panel.Render(window);
+
+	b2Vec2 pos = player.getCoordinates();
+	view.setCenter(pos.x, pos.y);
+
+	window.setView(view);
 	window.display();
 }
 
@@ -63,8 +81,9 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 {
 	//if (player.isGrounded()) {
 
-	if (key == sf::Keyboard::Space || key == sf::Keyboard::Z)
+	if (key == sf::Keyboard::Space || key == sf::Keyboard::Z) {
 		jump = keyState;
+	}
 	else if (key == sf::Keyboard::D)
 		right = keyState;
 	else if (key == sf::Keyboard::Q)
@@ -81,10 +100,10 @@ void GameManager::run()
 	window.setVerticalSyncEnabled(true);
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	
+	view.setSize(50,50);
 
-	panel.AddSurface(0, 500, 500, 10, SurfaceType::SWIMMABLE, world);
-	panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
+	panel.AddSurface(0, 5, 5, 1, SurfaceType::SWIMMABLE, world);
+	//panel.AddSurface(0, 500, 500, 10, SurfaceType::DRY, world);
 
 
 	while (window.isOpen()) {
@@ -100,8 +119,6 @@ void GameManager::run()
 			world.Step(TimePerFrame.asSeconds(), 6, 2);
 		}
 
-		b2Vec2 vel = player.getVelocity();
-		printf("Player velocity : (%f, %f) \n", vel.x, vel.y);
 		render();
 
 	}

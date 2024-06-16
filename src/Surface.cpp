@@ -4,7 +4,7 @@
 
 Surface::Surface(float h, float w, SurfaceType surfaceType, b2Body* body) : size{ sf::Vector2f(h,w) }, surfaceType{ surfaceType }, body{body} {
 	target.setPosition(sf::Vector2f(body->GetPosition().x, body->GetPosition().y));
-	target.setSize(sf::Vector2f(size.x, size.y));
+	target.setSize(sf::Vector2f(size.x * 100, size.y*100));
 	target.setFillColor(sf::Color::Red);
 }
 
