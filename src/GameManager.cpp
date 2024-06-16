@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-const float GameManager::playerSpeed = 0.f;
+const float GameManager::playerSpeed = 500.f;
 const sf::Time GameManager::TimePerFrame = sf::seconds(1.f / 60.f);
 
 void GameManager::processEvents()
@@ -12,7 +12,7 @@ void GameManager::processEvents()
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			handleInputs(event.key.code, true);
+			handleInputs(event.key.code,true);
 			break;
 
 		case sf::Event::KeyReleased:
@@ -33,18 +33,17 @@ void GameManager::processEvents()
 }
 
 void GameManager::update(sf::Time elapsedTime)
-{
-	b2Vec2 new_speed(0,0);
-	if (jump)
-		new_speed.y += playerSpeed;
-	if (right)
-		new_speed.x += playerSpeed;
+{	
 	if (left)
-		new_speed.x -= playerSpeed;
+		player.setVelocity(-playerSpeed,0);
+	if (right)
+		player.setVelocity(playerSpeed, 0);
+	if (jump)
+		player.setVelocity(0, playerSpeed);
 
 	b2Vec2 cur_coords = player.getCoordinates();
 
-	player.setCoordinates(cur_coords.x + new_speed.x * elapsedTime.asSeconds(), cur_coords.y + new_speed.y * elapsedTime.asSeconds());
+	player.setCoordinates(cur_coords.x , cur_coords.y);
 }
 
 void GameManager::render()
@@ -55,14 +54,17 @@ void GameManager::render()
 	window.display();
 }
 
-void GameManager::handleInputs(sf::Keyboard::Key key, bool isPressed)
+void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 {
+	//if (player.isGrounded()) {
+
 	if (key == sf::Keyboard::Space || key == sf::Keyboard::Z)
-		jump = isPressed;
+		jump = keyState;
 	else if (key == sf::Keyboard::D)
-		right = isPressed;
+		right = keyState;
 	else if (key == sf::Keyboard::Q)
-		left = isPressed;
+		left = keyState;
+	//}
 
 }
 
@@ -84,10 +86,12 @@ void GameManager::run()
 			timeSinceLastUpdate -= TimePerFrame;
 
 			processEvents();
-			update(TimePerFrame);
+			update(elapsedTime);
 			world.Step(TimePerFrame.asSeconds(), 6, 2);
 		}
 
+		b2Vec2 vel = player.getVelocity();
+		printf("Player velocity : (%f, %f) \n", vel.x, vel.y);
 		render();
 
 	}

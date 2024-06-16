@@ -27,7 +27,7 @@ void Panel::AddSurface(float x, float y, float h, float w ,SurfaceType surfaceTy
 	fixtureDef.friction = 0.3f;
 
 	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 10.0f);
+	groundBox.SetAsBox(h, w);
 	body->CreateFixture(&groundBox, 0.0f);
 
 	

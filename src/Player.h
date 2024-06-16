@@ -19,8 +19,13 @@ public :
 	
 	
 	b2Vec2 getCoordinates() const;
+	b2Vec2 getVelocity() const;
+
 
 	void setCoordinates(float xpos, float ypos);
+	void setVelocity(float xspeed, float yspeed);
+
+	bool isGrounded() const;
 	
 
 };
