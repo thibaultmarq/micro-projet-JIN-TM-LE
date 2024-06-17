@@ -6,12 +6,12 @@ Player::Player(b2World* world)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(1, -1);
+	bodyDef.position.Set(10, -1);
 	playerBody = world->CreateBody(&bodyDef);
 	playerBody->SetFixedRotation(true);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.005f, 0.005f);
+	dynamicBox.SetAsBox(0.45f, 0.45f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -47,7 +47,7 @@ b2Vec2 Player::getVelocity() const
 
 void Player::setCoordinates(float xpos, float ypos)
 {
-	target.setPosition(xpos, ypos);
+	target.setPosition(xpos-target.getRadius(), ypos - target.getRadius());
 
 }
 

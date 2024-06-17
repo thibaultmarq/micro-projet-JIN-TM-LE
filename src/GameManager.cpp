@@ -1,5 +1,11 @@
 #include "GameManager.h"
 
+#include <iostream>
+
+
+
+
+
 
 const float GameManager::playerSpeed = 1.f;
 const sf::Time GameManager::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -39,9 +45,10 @@ void GameManager::update()
 	switch (surface)
 	{
 	case SurfaceType::DRY:
+			b2Vec2 vel = player.getVelocity();
+			if (vel.x ==0 && vel.y ==0)
 			window.close();
 			break;
-			
 	case SurfaceType::SWIMMABLE:
 		player.getBody()->SetGravityScale(0.5);
 		if (left)
@@ -69,11 +76,11 @@ void GameManager::update()
 void GameManager::render()
 {
 	window.clear();
-	player.render(window);
+	
 	panel.Render(window);
-
+	player.render(window);
 	b2Vec2 pos = player.getCoordinates();
-	view.setCenter(pos.x, pos.y);
+	view.setCenter(12.5, pos.y);
 
 	window.setView(view);
 	window.display();
@@ -102,13 +109,26 @@ void GameManager::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	view.setSize(17,17);
+	view.setSize(20,20);
 
 	
+	pugi::xml_document doc;
+	auto result = doc.load_file("resources/level.xml");
+	if ( !result)
+	{
+		std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+		return ;
+	}
+	panel= Panel{ doc.child("Level"), world};
+	//panel.AddSurface(0, 25, 1, 25, SurfaceType::SWIMMABLE, world);
+	//panel.AddSurface(0, 50, 25, 1, SurfaceType::SWIMMABLE, world);
+
 	
-	panel.AddSurface(0, 25, 1, 25, SurfaceType::SWIMMABLE, world);
-	panel.AddSurface(0, 50, 25, 1, SurfaceType::SWIMMABLE, world);
-	panel.AddSurface(25, 50, 25, 1, SurfaceType::DRY, world);
+	//panel.AddSurfaceBlock(-2, -1000, 5, 1000, SurfaceType::TOUCHABLE, world);
+//	panel.AddSurfaceBlock(22, -1000, 5, 1000, SurfaceType::TOUCHABLE, world);
+//	panel.AddSurfaceBlock(13, -12, 2, 2, SurfaceType::SWIMMABLE, world);
+//	panel.AddSurfaceBlock(0, 0, 25, 25, SurfaceType::SWIMMABLE, world);
+
 
 
 
@@ -126,7 +146,7 @@ void GameManager::run()
 		}
 
 		b2Vec2 vel = player.getVelocity();
-		printf("Player velocity : (%f, %f)\n", vel.x, vel.y);
+		//printf("Player velocity : (%f, %f)\n", vel.x, vel.y);
 		render();
 
 	}

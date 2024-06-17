@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level>
+	<N x="-2" y= "-1000" h= "5" w="1000" type="TOUCH"/>
+	<N x="22" y="-1000" h="5" w="1000" type="TOUCH"/>
+	<N x="0" y="0" h="25" w="25" type="SWIM"/>
+	
+	<N x="5" y="-10" h="5" w="5" type="DRY"/>
+</Level>
