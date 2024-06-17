@@ -30,5 +30,6 @@ public :
 
 	bool isGrounded() const;
 	
+	sf::CircleShape getTarget() const;
 
 };

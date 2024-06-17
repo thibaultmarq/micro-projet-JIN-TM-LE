@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Surface.h"
+#include "player.h"
 
 class Panel {
 private:
@@ -9,5 +10,5 @@ public:
 	Panel() = default;
 	void Render(sf::RenderTarget& window) const;
 	void AddSurface(float x, float y, float h, float w, SurfaceType surfaceType, b2World& world);
-	SurfaceType checkPlayerTouch(const b2Body* playerBody) const;
+	SurfaceType checkPlayerTouch(Player* playerBody) const;
 };

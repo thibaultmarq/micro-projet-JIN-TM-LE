@@ -34,7 +34,8 @@ void GameManager::processEvents()
 
 void GameManager::update()
 {	
-	SurfaceType surface = panel.checkPlayerTouch(player.getBody());
+	SurfaceType surface = panel.checkPlayerTouch(&player);
+	player.getBody()->SetGravityScale(1);
 	switch (surface)
 	{
 	case SurfaceType::DRY:
@@ -42,6 +43,7 @@ void GameManager::update()
 			break;
 			
 	case SurfaceType::SWIMMABLE:
+		player.getBody()->SetGravityScale(0.5);
 		if (left)
 			player.setVelocity(-playerSpeed,0);
 		if (right)
@@ -100,7 +102,7 @@ void GameManager::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	view.setSize(20,20);
+	view.setSize(17,17);
 
 	
 	

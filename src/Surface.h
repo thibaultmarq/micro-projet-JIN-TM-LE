@@ -14,4 +14,5 @@ public:
 	Surface( float h, float w, SurfaceType surfaceType, b2Body* body);
 	SurfaceType getType() const;
 	b2Body* getBody() const;
+	sf::RectangleShape getTarget() const;
 };

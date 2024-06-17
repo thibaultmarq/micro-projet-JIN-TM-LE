@@ -6,7 +6,7 @@ Player::Player(b2World* world)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.5, 0.5);
+	bodyDef.position.Set(1, -1);
 	playerBody = world->CreateBody(&bodyDef);
 	playerBody->SetFixedRotation(true);
 
@@ -71,3 +71,6 @@ b2Body* Player::getBody() {
 	return playerBody;
 }
 
+sf::CircleShape Player::getTarget() const{
+	return target;
+}
