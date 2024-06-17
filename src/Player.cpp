@@ -53,16 +53,10 @@ void Player::setCoordinates(float xpos, float ypos)
 
 void Player::setVelocity(float xspeed, float yspeed)
 {	
-	b2Vec2 vel = playerBody->GetLinearVelocity();
 	b2Vec2 goal{ xspeed , -yspeed };
 
-	if (xspeed == 0)
-		goal.x = vel.x;
-	if (yspeed == 0)
-		goal.y = vel.y;
-
-	printf("New velocity : (%f, %f)\n", goal.x, goal.y);
-	playerBody->SetLinearVelocity(goal);
+	goal *= playerBody->GetMass();
+	playerBody->ApplyLinearImpulseToCenter(goal,true);
 
 }
 
@@ -72,25 +66,6 @@ void Player::testTeleport(float xpos, float ypos)
 
 }
 
-bool Player::isGrounded() const
-{
-
-	b2Vec2 center = playerBody->GetPosition();
-	b2Vec2 bottom = center + b2Vec2(0, 40.f);
-
-	b2RayCastInput input;
-	input.p1 = center;
-	input.p2 = bottom;
-	input.maxFraction = 1;
-
-	b2RayCastOutput output;
-
-	bool ret = playerBody->GetFixtureList()->RayCast(&output, input, 0);
-
-	printf("grounded : %d\n", ret);
-
-	return ret;
-}
 
 b2Body* Player::getBody() {
 	return playerBody;
