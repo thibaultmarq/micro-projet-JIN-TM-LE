@@ -57,7 +57,15 @@ void Player::setVelocity(float xspeed, float yspeed)
 
 	goal *= playerBody->GetMass();
 	playerBody->ApplyLinearImpulseToCenter(goal,true);
+	b2Vec2 vel = playerBody->GetLinearVelocity();
+	if (vel.x > 20)
+		playerBody->SetLinearVelocity(b2Vec2(20, vel.y));
+	else if (vel.x < -20)
+		playerBody->SetLinearVelocity(b2Vec2(-20, vel.y));
 
+	vel = playerBody->GetLinearVelocity();
+	if (vel.y < -30)
+		playerBody->SetLinearVelocity(b2Vec2(vel.x, -30));
 }
 
 void Player::testTeleport(float xpos, float ypos)

@@ -35,7 +35,9 @@ void Panel::AddSurface(float x, float y, float h, float w ,SurfaceType surfaceTy
 SurfaceType Panel::checkPlayerTouch( Player* player) const {
 	for (auto const& c : level) {
 
-		if ( c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == player->getBody()) {
+		b2Body* body = c.getBody();
+
+		if ( body->GetContactList() != nullptr && body->GetContactList()->other == player->getBody()) {
 			
 			return c.getType();
 
@@ -45,5 +47,5 @@ SurfaceType Panel::checkPlayerTouch( Player* player) const {
 			return SurfaceType::SWIMMABLE;
 		}
 	}
-	return SurfaceType::TOUCHABLE;
+	return SurfaceType::VOID;
 }

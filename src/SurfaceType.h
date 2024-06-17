@@ -3,5 +3,6 @@
 enum class SurfaceType {
 	DRY,
 	TOUCHABLE,
-	SWIMMABLE
+	SWIMMABLE,
+	VOID
 };
