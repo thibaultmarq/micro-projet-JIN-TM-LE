@@ -28,6 +28,7 @@ public :
 
 	void testTeleport(float xpos, float ypos);
 
+	bool isGrounded() const;
 	
 
 };
