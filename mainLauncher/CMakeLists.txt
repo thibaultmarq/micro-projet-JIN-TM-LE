@@ -12,3 +12,8 @@ add_custom_target(copy-resources ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/resourc
                                    ${RESOURCES}
                                    ${CMAKE_CURRENT_BINARY_DIR}/resources)
         add_dependencies(mainLauncher copy-resources)
+
+if(WIN32)
+   file(GLOB_RECURSE DYNAMIC_LIBS CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/lib_openal32/${ARCH}/*.dll)
+   file(COPY ${DYNAMIC_LIBS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()

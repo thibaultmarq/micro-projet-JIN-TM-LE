@@ -45,10 +45,14 @@ void GameManager::update()
 	switch (surface)
 	{
 	case SurfaceType::DRY:
-			b2Vec2 vel = player.getVelocity();
-			if (vel.x ==0 && vel.y ==0)
+		if (death[soundState].getStatus() == sf::Sound::Stopped)
+			death[soundState].play();
+
+			
+		b2Vec2 vel = player.getVelocity();
+		if (vel.x ==0 && vel.y ==0)
 			window.close();
-			break;
+		break;
 	case SurfaceType::SWIMMABLE:
 		player.getBody()->SetGravityScale(0.5);
 		if (left)
@@ -58,14 +62,17 @@ void GameManager::update()
 		if (jump) {
 			player.setVelocity(0, playerSpeed * 4.f);
 		}
+		splurch[soundState].play();
 		break;
 
 	case SurfaceType::TOUCHABLE:
+		bump.play();
 		break;
 
 	default:
 		break;
 	}
+
 
 	b2Vec2 cur_coords = player.getCoordinates();
 
@@ -96,8 +103,10 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 		right = keyState;
 	else if (key == sf::Keyboard::Q)
 		left = keyState;
-	else if (key == sf::Keyboard::K)
-		player.testTeleport(150, 150);
+	else if (key == sf::Keyboard::N)
+		soundState = 0;
+	else if (key == sf::Keyboard::W)
+		soundState = 1;
 
 }
 
@@ -123,6 +132,50 @@ void GameManager::run()
 	//panel.AddSurface(0, 25, 1, 25, SurfaceType::SWIMMABLE, world);
 	//panel.AddSurface(0, 50, 25, 1, SurfaceType::SWIMMABLE, world);
 
+	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
+	sf::SoundBuffer bufferBump;
+	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferDeath;
+	sf::SoundBuffer bufferVictory;
+	
+	if (!bufferSplurch.first.loadFromFile("resources/splurch1.mp3")) {
+		printf("Splurch didn't load !\n");
+		window.close();
+	}
+	if (!bufferSplurch.second.loadFromFile("resources/splurch2.mp3")) {
+		printf("Splurch didn't load !\n");
+		window.close();
+	}
+	splurch[0].setBuffer(bufferSplurch.first);
+
+	splurch[1].setBuffer(bufferSplurch.second);
+	splurch[1].setVolume(30);
+
+	if (!bufferBump.loadFromFile("resources/bump.mp3")) {
+		printf("Bump didn't load !\n");
+		window.close();
+	}
+	bump.setBuffer(bufferBump);
+
+	if (!bufferDeath.first.loadFromFile("resources/death1.mp3")) {
+		printf("Death didn't load !\n");
+		window.close();
+	}
+	if (!bufferDeath.second.loadFromFile("resources/death2.mp3")) {
+		printf("Death didn't load !\n");
+		window.close();
+	}
+	
+	death[0].setBuffer(bufferDeath.first);
+	death[0].setVolume(30);
+	death[1].setBuffer(bufferDeath.second);
+
+
+	if (!bufferVictory.loadFromFile("resources/victory.mp3")) {
+		printf("Victory didn't load !\n");
+		window.close();
+	}
+
+	victory.setBuffer(bufferVictory);
 	
 	//panel.AddSurfaceBlock(-2, -1000, 5, 1000, SurfaceType::TOUCHABLE, world);
 //	panel.AddSurfaceBlock(22, -1000, 5, 1000, SurfaceType::TOUCHABLE, world);
