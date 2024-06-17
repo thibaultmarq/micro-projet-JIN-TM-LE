@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-const float GameManager::playerSpeed = 2.f;
+const float GameManager::playerSpeed = 1.f;
 const sf::Time GameManager::TimePerFrame = sf::seconds(1.f / 60.f);
 
 void GameManager::processEvents()
@@ -32,7 +32,7 @@ void GameManager::processEvents()
 
 }
 
-void GameManager::update(sf::Time elapsedTime)
+void GameManager::update()
 {	
 	SurfaceType surface = panel.checkPlayerTouch(player.getBody());
 	switch (surface)
@@ -40,14 +40,14 @@ void GameManager::update(sf::Time elapsedTime)
 	case SurfaceType::DRY:
 			window.close();
 			break;
-
+			
 	case SurfaceType::SWIMMABLE:
 		if (left)
 			player.setVelocity(-playerSpeed,0);
 		if (right)
 			player.setVelocity(playerSpeed, 0);
 		if (jump) {
-			player.setVelocity(0, playerSpeed * 10);
+			player.setVelocity(0, playerSpeed * 4.f);
 		}
 		break;
 
@@ -79,7 +79,6 @@ void GameManager::render()
 
 void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 {
-	//if (player.isGrounded()) {
 
 	if (key == sf::Keyboard::Space || key == sf::Keyboard::Z) {
 		jump = keyState;
@@ -90,7 +89,6 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 		left = keyState;
 	else if (key == sf::Keyboard::K)
 		player.testTeleport(150, 150);
-	//}
 
 }
 
@@ -98,15 +96,17 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 void GameManager::run()
 {
 	window.setVerticalSyncEnabled(true);
+	window.setFramerateLimit(60);
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	view.setSize(50,50);
+	view.setSize(20,20);
 
 	
 	
-	panel.AddSurface(0, 500, 250, 10, SurfaceType::SWIMMABLE, world);
-	panel.AddSurface(250, 500, 250, 10, SurfaceType::DRY, world);
+	panel.AddSurface(0, 25, 1, 25, SurfaceType::SWIMMABLE, world);
+	panel.AddSurface(0, 50, 25, 1, SurfaceType::SWIMMABLE, world);
+	panel.AddSurface(25, 50, 25, 1, SurfaceType::DRY, world);
 
 
 
@@ -119,10 +119,12 @@ void GameManager::run()
 			timeSinceLastUpdate -= TimePerFrame;
 
 			processEvents();
-			update(elapsedTime);
+			update();
 			world.Step(TimePerFrame.asSeconds(), 6, 2);
 		}
 
+		b2Vec2 vel = player.getVelocity();
+		printf("Player velocity : (%f, %f)\n", vel.x, vel.y);
 		render();
 
 	}

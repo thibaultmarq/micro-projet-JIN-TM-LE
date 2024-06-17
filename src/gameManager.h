@@ -7,7 +7,7 @@
 class GameManager {
 private:
 
-	b2World world{b2Vec2(0.f,20.f)};
+	b2World world{b2Vec2(0.f,25.f)};
 
 	Player player{ &world };
 	Panel panel;
@@ -20,7 +20,7 @@ private:
 
 
 	void processEvents();
-	void update(sf::Time elapsedTime);
+	void update();
 	void render();
 	void handleInputs(sf::Keyboard::Key key, bool keyState);
 

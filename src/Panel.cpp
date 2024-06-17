@@ -33,12 +33,9 @@ void Panel::AddSurface(float x, float y, float h, float w ,SurfaceType surfaceTy
 }
 
 SurfaceType Panel::checkPlayerTouch( const b2Body* playerBody) const {
-	for (auto c : level) {
-		printf("%p\n", c.getBody());
-		
+	for (auto const& c : level) {
 
-		if (c.getType() == SurfaceType::DRY && c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == playerBody) {
-			printf("%p\n", c.getBody());
+		if (c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == playerBody) {
 			return c.getType();
 
 		}
