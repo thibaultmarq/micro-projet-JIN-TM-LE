@@ -7,7 +7,7 @@ Surface::Surface(float h, float w, SurfaceType surfaceType, b2Body* body) : size
 	target.setPosition(sf::Vector2f(body->GetPosition().x-h/2, body->GetPosition().y-w/2));
 	
 	if (surfaceType == SurfaceType::SWIMMABLE) {
-		target.setSize(sf::Vector2f(size.x+10, size.y+10));
+		target.setSize(sf::Vector2f(size.x+0.5f, size.y+0.5f));
 		target.setFillColor(sf::Color::White);
 	}
 	else {
@@ -30,4 +30,8 @@ b2Body* Surface::getBody() const{
 
 SurfaceType Surface::getType() const {
 	return surfaceType;
+}
+
+sf::RectangleShape Surface::getTarget() const {
+	return target;
 }
