@@ -3,19 +3,43 @@
 #include "string_view"
 
 
+
+using namespace std;
+using namespace literals;
+
+
 Panel::Panel(const pugi::xml_node& node, b2World& world) {
-	for (pugi::xml_node node : node.children())
+	for (pugi::xml_node nnode : node.children())
 	{
-		float x=node.attribute("x").as_float();
-		float y = node.attribute("y").as_float();
-		float h = node.attribute("h").as_float();
-		float w = node.attribute("w").as_float();
-		SurfaceType surfaceType = typeFromString(node.attribute("type").as_string());
-		AddSurfaceBlock(x,y,h,w,surfaceType,world);
+		float x=nnode.attribute("x").as_float();
+		float y = nnode.attribute("y").as_float();
+		float h = nnode.attribute("h").as_float();
+		float w = nnode.attribute("w").as_float();
+		SurfaceType surfaceType = typeFromString(nnode.attribute("type").as_string());
+		string na = nnode.name();
+		if (na == "S") {
+			addStaticBlock(x,y,h,w,surfaceType,world);
+		}
+		else if (na ==  "M") {
+			float maxX = nnode.attribute("mx").as_float();
+			float maxY = nnode.attribute("my").as_float();
+			addMovingBlock(b2Vec2(x, y),b2Vec2(maxX, maxY), b2Vec2(h, w), surfaceType, world);
+		}
+		
 	}
 }
 
-SurfaceType Panel::typeFromString(std::string  const& s) {
+void Panel::test() {
+	for (auto const& surf : level) {
+		if (dynamic_cast<MovingSurface*>(surf.get())) {
+			static_cast<MovingSurface*>(surf.get())->changeDirection();
+		}
+	}
+	
+}
+
+
+SurfaceType Panel::typeFromString(std::string  const& s) const{
 	if (s == "SWIM") {
 		return SurfaceType::SWIMMABLE;
 	} 
@@ -26,65 +50,68 @@ SurfaceType Panel::typeFromString(std::string  const& s) {
 }
 
 
-void Panel::Render(sf::RenderTarget& window) const {
+void Panel::render(sf::RenderTarget& window) const {
 	for (auto const& c : level) {
-		c.Render(window);
+		c->render(window);
 	}
 }
-void Panel::AddSurfaceBlock(float x, float y, float h, float w, SurfaceType surfaceType, b2World& world) {
+void Panel::addStaticBlock(float x, float y, float h, float w, SurfaceType surfaceType, b2World& world) {
 	float thickness;
 	if (surfaceType == SurfaceType::SWIMMABLE) {
 		thickness = 1.f;
-		AddSurface(x, y, h,thickness, surfaceType, world);
-		AddSurface(x, y+thickness, h, w - thickness, SurfaceType::TOUCHABLE, world);
+		addSurface(x, y, h, w-thickness, surfaceType, world);
+		addSurface(x-0.5f, y +w- thickness, h+1,  thickness, SurfaceType::TOUCHABLE, world);
 
-	}else {
-		thickness =0.01f;
-		
-		AddSurface(x, y, h, w, SurfaceType::TOUCHABLE, world);
-		AddSurface(x , y, h , thickness, surfaceType, world);
+	}
+	else {
+		thickness = 0.01f;
+
+		addSurface(x, y, h, w, SurfaceType::TOUCHABLE, world);
+		addSurface(x, y, h, thickness, surfaceType, world);
 		//AddSurface(x, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
 		//AddSurface(x + h + thickness, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
-		
+
 	}
-	
-	
-	
-	
-
 }
-void Panel::AddSurface(float x, float y, float h, float w ,SurfaceType surfaceType, b2World& world) {
-	b2BodyDef bodyDef;
-	b2PolygonShape dynamicBox;
 
-	bodyDef.type = b2_staticBody;
+void Panel::addMovingBlock(b2Vec2 coord, b2Vec2 maxCoord, b2Vec2 size, SurfaceType surfaceType, b2World & world) {
+	float thickness;
+	if (surfaceType == SurfaceType::SWIMMABLE) {
+		thickness = 1.f;
+		addSurface(coord, maxCoord, b2Vec2(size.x,size.y- thickness), surfaceType, world);
+		addSurface(coord + b2Vec2(-0.5f,size.y- thickness),maxCoord+ b2Vec2(-0.5,size.y-thickness),  b2Vec2(size.x+1.f,thickness), SurfaceType::TOUCHABLE, world);
 
-		
-	bodyDef.position.Set(x+h/2,y+w/2);
+	}
+	else {
+		thickness = 0.01f;
 
-	b2Body * body = world.CreateBody(&bodyDef);
+		addSurface(coord, maxCoord,size, SurfaceType::TOUCHABLE, world);
+		addSurface(coord, maxCoord, b2Vec2(size.x,thickness), surfaceType, world);
+		//AddSurface(x, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
+		//AddSurface(x + h + thickness, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
+
+	}
+}
 	
 	
 
-	
-	b2PolygonShape groundBox;
-	groundBox.SetAsBox(h/2, w/2);
-	body->CreateFixture(&groundBox, 0.0f);
-	
-	
-	Surface surf(h,w, surfaceType, body);
 
-	level.push_back(surf);
+void Panel::addSurface(float x, float y, float h, float w ,SurfaceType surfaceType, b2World& world) {
+
+	level.push_back(make_unique<StaticSurface>(x, y, h, w, surfaceType, world));
+}
+
+void Panel::addSurface(b2Vec2 coord, b2Vec2 maxCoord, b2Vec2 size, SurfaceType surfaceType, b2World& world) {
+	level.push_back(make_unique<MovingSurface>(coord, maxCoord, size, surfaceType, world));
 }
 
 SurfaceType Panel::checkPlayerTouch( Player* player) const {
 	SurfaceType res = SurfaceType::VOID;
 	for (auto const& c : level) {
-
-		if (c.getBody()->GetContactList() != nullptr && c.getBody()->GetContactList()->other == player->getBody()) {
-			if (c.getType() == SurfaceType::SWIMMABLE)
+		if (c->getBody() != nullptr && c->getBody()->GetContactList() != nullptr && c->getBody()->GetContactList()->other == player->getBody()) {
+			if (c->getType() == SurfaceType::SWIMMABLE)
 			{
-				return c.getType();
+				return c->getType();
 			}/*
 			if (res == SurfaceType::VOID) {
 
@@ -96,10 +123,10 @@ SurfaceType Panel::checkPlayerTouch( Player* player) const {
 			if (c.getType() == SurfaceType::DRY) {
 				printf("salut\n");
 			}*/
-			res = c.getType();
+			res = c->getType();
 			
 		}
-		else if (c.getTarget().getGlobalBounds().intersects(player->getTarget().getGlobalBounds()) && c.getType() == SurfaceType::SWIMMABLE) {
+		else if (c->getTarget().getGlobalBounds().intersects(player->getTarget().getGlobalBounds()) && c->getType() == SurfaceType::SWIMMABLE) {
 			
 			return SurfaceType::SWIMMABLE;
 		}
