@@ -109,10 +109,10 @@ SurfaceType Panel::checkPlayerTouch( Player* player) const {
 	SurfaceType res = SurfaceType::VOID;
 	for (auto const& c : level) {
 
-		b2ContactEdge const* contactList = c.getBody()->GetContactList();
+		b2ContactEdge const* contactList = c->getBody()->GetContactList();
 
 		if ( contactList != nullptr && contactList->other == player->getBody()) {
-			if (c.getType() == SurfaceType::SWIMMABLE)
+			if (c->getType() == SurfaceType::SWIMMABLE)
 
 			{
 				return c->getType();
