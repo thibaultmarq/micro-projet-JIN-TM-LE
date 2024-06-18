@@ -3,16 +3,22 @@
 #include <box2d/box2d.h>
 #include <SFML/Graphics.hpp>
 
-class Surface {
-private:
+class Surface abstract {
+public:
 	sf::Vector2f size;
 	SurfaceType surfaceType;
 	b2Body* body;
 	sf::RectangleShape target;
-public:
-	void Render(sf::RenderTarget& window) const;
-	Surface( float h, float w, SurfaceType surfaceType, b2Body* body);
+	
+	Surface()= default;
+	explicit Surface( float h, float w, SurfaceType surfaceType);
+	virtual ~Surface() = default;
+
+
+
+	void render(sf::RenderTarget& window);
 	SurfaceType getType() const;
 	b2Body* getBody() const;
-	sf::RectangleShape getTarget() const;
+	sf::RectangleShape getTarget() const; 
+
 };

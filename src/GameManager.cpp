@@ -38,13 +38,16 @@ void GameManager::processEvents()
 void GameManager::update(sf::Time elapsedTime)
 {	
 	SurfaceType surface = panel.checkPlayerTouch(&player);
+	panel.test();
 	player.getBody()->SetGravityScale(1);
 
 	switch (surface)
 	{
 	case SurfaceType::DRY:
 
+
 		b2Vec2 vel = player.getVelocity();
+
 		if (vel.x == 0 && vel.y == 0) {
 			if (lastSurface != SurfaceType::DRY && death[soundState].getStatus() == sf::Sound::Stopped) {
 				death[soundState].play();
@@ -53,6 +56,7 @@ void GameManager::update(sf::Time elapsedTime)
 			float y = player.getCoordinates().y;
 			save.addScore(-y);
 			save.saveToDisk();
+
 			window.close();
 			break;
 		}
@@ -108,7 +112,7 @@ void GameManager::render()
 {
 	window.clear();
 	
-	panel.Render(window);
+	panel.render(window);
 	player.render(window);
 	b2Vec2 pos = player.getCoordinates();
 	view.setCenter(12.5, pos.y);

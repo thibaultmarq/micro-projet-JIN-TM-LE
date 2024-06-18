@@ -34,6 +34,7 @@ void Player::render(sf::RenderTarget &window) const
 }
 
 
+
 b2Vec2 Player::getCoordinates() const
 {
 	return playerBody->GetPosition();
