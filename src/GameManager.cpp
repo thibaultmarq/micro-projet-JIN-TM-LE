@@ -4,9 +4,6 @@
 
 
 
-
-
-
 const float GameManager::playerSpeed = 1.f;
 const sf::Time GameManager::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -38,41 +35,68 @@ void GameManager::processEvents()
 
 }
 
-void GameManager::update()
+void GameManager::update(sf::Time elapsedTime)
 {	
 	SurfaceType surface = panel.checkPlayerTouch(&player);
 	player.getBody()->SetGravityScale(1);
+
 	switch (surface)
 	{
 	case SurfaceType::DRY:
-		if (death[soundState].getStatus() == sf::Sound::Stopped)
-			death[soundState].play();
 
-			
 		b2Vec2 vel = player.getVelocity();
-		if (vel.x ==0 && vel.y ==0)
+		if (vel.x == 0 && vel.y == 0) {
+			if (lastSurface != SurfaceType::DRY && death[soundState].getStatus() == sf::Sound::Stopped) {
+				death[soundState].play();
+
+			}
+			float y = player.getCoordinates().y;
+			save.addScore(-y);
+			save.saveToDisk();
 			window.close();
+			break;
+		}
 		break;
+
 	case SurfaceType::SWIMMABLE:
+
+		if (lastSurface != SurfaceType::SWIMMABLE && splurch[soundState].getStatus() == sf::Sound::Stopped) {
+			splurch[soundState].play();
+
+		}
+		
+		
+		/*
+		for (auto const& input : inputList) {
+			
+			if (commandMap.find(input) != commandMap.end())
+				commandMap[input]->execute(player, playerSpeed);
+				
+		}
+		
+		*/
 		player.getBody()->SetGravityScale(0.5);
 		if (left)
-			player.setVelocity(-playerSpeed,0);
+			player.setVelocity(-playerSpeed, 0);
 		if (right)
 			player.setVelocity(playerSpeed, 0);
-		if (jump) {
-			player.setVelocity(0, playerSpeed * 4.f);
-		}
-		splurch[soundState].play();
+		if (jump)
+			player.setVelocity(0,playerSpeed*4);
+			
 		break;
 
 	case SurfaceType::TOUCHABLE:
-		bump.play();
-		break;
 
-	default:
+		if (lastSurface != SurfaceType::TOUCHABLE && bump.getStatus() == sf::Sound::Stopped) {
+			bump.play();
+		}
+
 		break;
 	}
 
+	inputList.clear();
+
+	lastSurface = surface;
 
 	b2Vec2 cur_coords = player.getCoordinates();
 
@@ -95,14 +119,19 @@ void GameManager::render()
 
 void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 {
+	/*
+	if (keyState)
+		inputList.insert(key);
+	else
+		inputList.erase(key);
+	*/
 
-	if (key == sf::Keyboard::Space || key == sf::Keyboard::Z) {
-		jump = keyState;
-	}
+	if (key == sf::Keyboard::Q)
+		left = keyState;
 	else if (key == sf::Keyboard::D)
 		right = keyState;
-	else if (key == sf::Keyboard::Q)
-		left = keyState;
+	else if (key == sf::Keyboard::Z || key == sf::Keyboard::Space)
+		jump = keyState;
 	else if (key == sf::Keyboard::N)
 		soundState = 0;
 	else if (key == sf::Keyboard::W)
@@ -120,6 +149,10 @@ void GameManager::run()
 
 	view.setSize(20,20);
 
+	commandMap[sf::Keyboard::Q] = std::make_unique<MoveLeftCommand>();
+	commandMap[sf::Keyboard::D] = std::make_unique<MoveRightCommand>();
+	commandMap[sf::Keyboard::Z] = std::make_unique<JumpCommand>();
+	commandMap[sf::Keyboard::Space] = std::make_unique<JumpCommand>();
 	
 	pugi::xml_document doc;
 	auto result = doc.load_file("resources/level.xml");
@@ -129,8 +162,7 @@ void GameManager::run()
 		return ;
 	}
 	panel= Panel{ doc.child("Level"), world};
-	//panel.AddSurface(0, 25, 1, 25, SurfaceType::SWIMMABLE, world);
-	//panel.AddSurface(0, 50, 25, 1, SurfaceType::SWIMMABLE, world);
+
 
 	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
 	sf::SoundBuffer bufferBump;
@@ -146,6 +178,7 @@ void GameManager::run()
 		window.close();
 	}
 	splurch[0].setBuffer(bufferSplurch.first);
+	splurch[0].setVolume(50);
 
 	splurch[1].setBuffer(bufferSplurch.second);
 	splurch[1].setVolume(30);
@@ -155,6 +188,7 @@ void GameManager::run()
 		window.close();
 	}
 	bump.setBuffer(bufferBump);
+	bump.setVolume(30);
 
 	if (!bufferDeath.first.loadFromFile("resources/death1.mp3")) {
 		printf("Death didn't load !\n");
@@ -177,12 +211,6 @@ void GameManager::run()
 
 	victory.setBuffer(bufferVictory);
 	
-	//panel.AddSurfaceBlock(-2, -1000, 5, 1000, SurfaceType::TOUCHABLE, world);
-//	panel.AddSurfaceBlock(22, -1000, 5, 1000, SurfaceType::TOUCHABLE, world);
-//	panel.AddSurfaceBlock(13, -12, 2, 2, SurfaceType::SWIMMABLE, world);
-//	panel.AddSurfaceBlock(0, 0, 25, 25, SurfaceType::SWIMMABLE, world);
-
-
 
 
 	while (window.isOpen()) {
@@ -194,14 +222,13 @@ void GameManager::run()
 			timeSinceLastUpdate -= TimePerFrame;
 
 			processEvents();
-			update();
+			update(timeSinceLastUpdate);
 			world.Step(TimePerFrame.asSeconds(), 6, 2);
 		}
 
-		b2Vec2 vel = player.getVelocity();
-		//printf("Player velocity : (%f, %f)\n", vel.x, vel.y);
 		render();
 
 	}
 
 }
+

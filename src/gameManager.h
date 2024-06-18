@@ -6,24 +6,35 @@
 #include "Panel.h"
 #include  "pugixml.hpp"
 #include <array>
+#include "SaveFile.h"
+#include <unordered_map>
+#include "Command.h"
+#include <set>
 
 class GameManager {
 private:
 
-	b2World world{b2Vec2(0.f,25.f)};
+	b2World world{ b2Vec2(0.f,25.f) };
 
 	Player player{ &world };
 	Panel panel;
 
-	bool jump{ false };
+	SurfaceType lastSurface = SurfaceType::VOID;
+
+	std::unordered_map < sf::Keyboard::Key, std::unique_ptr<Command>> commandMap;
+
+	
+	std::set<sf::Keyboard::Key> inputList;
 	bool left{ false };
 	bool right{ false };
+	bool jump{ false };
+
+
 
 	static const float playerSpeed;
 
-
 	void processEvents();
-	void update();
+	void update(sf::Time elapsedTime);
 	void render();
 	void handleInputs(sf::Keyboard::Key key, bool keyState);
 
@@ -37,6 +48,8 @@ private:
 	std::array<sf::Sound,2> death;
 	sf::Sound victory;
 	int soundState{ 0 };
+
+	SaveFile save;
 
 
 public:

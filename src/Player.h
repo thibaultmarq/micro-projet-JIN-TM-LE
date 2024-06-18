@@ -28,6 +28,7 @@ public :
 
 	void testTeleport(float xpos, float ypos);
 
+	
 	sf::CircleShape getTarget() const;
 
 };
