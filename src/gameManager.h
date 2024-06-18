@@ -29,7 +29,7 @@ private:
 	bool right{ false };
 	bool jump{ false };
 
-
+	int shoulddie = 0;
 
 	static const float playerSpeed;
 
