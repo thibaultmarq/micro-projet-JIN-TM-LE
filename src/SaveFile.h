@@ -19,6 +19,8 @@ public:
 
 	void saveToDisk() const;
 
+	std::vector<float> getScores() const;
+
 
 
 };

@@ -23,6 +23,7 @@ void GameManager::processEvents()
 			break;
 
 		case sf::Event::Closed:
+			save.saveToDisk();
 			window.close();
 			break;
 
@@ -55,9 +56,25 @@ void GameManager::update(sf::Time elapsedTime)
 			}
 			float y = player.getCoordinates().y;
 			save.addScore(-y);
-			save.saveToDisk();
+			
+			std::string res = "Best scores :\n";
+			std::vector<float> scores = save.getScores();
 
-			window.close();
+			for (auto const& score : scores) {
+
+				res.append(std::to_string(score));
+				res.append("\n");
+
+			}
+
+			printf(res.c_str());
+
+			scoreText.setString(res);
+
+			displayTime = 0;
+			player.testTeleport(10, -0.5);
+
+			
 			break;
 		}
 		break;
@@ -98,7 +115,7 @@ void GameManager::update(sf::Time elapsedTime)
 		break;
 	}
 
-	inputList.clear();
+	//inputList.clear();
 
 	lastSurface = surface;
 
@@ -118,6 +135,12 @@ void GameManager::render()
 	view.setCenter(12.5, pos.y);
 
 	window.setView(view);
+
+	if (displayTime < 3) {
+		window.draw(scoreText);
+		displayTime += TimePerFrame.asSeconds();
+	}
+
 	window.display();
 }
 
@@ -146,6 +169,15 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 
 void GameManager::run()
 {
+
+	sf::Font font;
+	font.loadFromFile("resources/arial.ttf");
+	scoreText.setFont(font);
+	scoreText.setFillColor(sf::Color::Blue);
+	scoreText.setCharacterSize(10);
+	scoreText.setScale(sf::Vector2f(0.1f, 0.1f));
+	scoreText.setPosition(5, -10);
+
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 	sf::Clock clock;

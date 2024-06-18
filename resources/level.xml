@@ -5,7 +5,7 @@
 	<S x="0" y="0" h="25" w="25" type="SWIM"/>
 	
 
-	<S x="5" y="-10" h="5" w="5" type="SWIM"/>
-	<M x="5" y="-20" h="5" w="5" mx="15" my="-30" type ="SWIM"/>
+	<S x="5" y="-10" h="5" w="5" type="DRY"/>
+	<M x="5" y="-20" h="5" w="5" mx="15" my="-30" type ="DRY"/>
 
 </Level>

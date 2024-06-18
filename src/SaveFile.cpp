@@ -39,7 +39,6 @@ void SaveFile::addScore(float alt)
 		}
 
 	}
-	printf("Added score : %f\n", alt);
 
 }
 
@@ -63,6 +62,11 @@ void SaveFile::saveToDisk() const
 	}
 	
 	doc.save_file("resources/save.xml","\t");
+}
+
+std::vector<float> SaveFile::getScores() const
+{
+	return bestAlt;
 }
 
 

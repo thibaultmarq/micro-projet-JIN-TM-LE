@@ -29,7 +29,7 @@ private:
 	bool right{ false };
 	bool jump{ false };
 
-
+	float displayTime = 3;
 
 	static const float playerSpeed;
 
@@ -42,6 +42,7 @@ private:
 
 	sf::RenderWindow window{ sf::VideoMode{800,600}, "Splerm", sf::Style::Close };
 	sf::View view;
+	sf::Text scoreText;
 
 	std::array<sf::Sound,2> splurch;
 	sf::Sound bump;
