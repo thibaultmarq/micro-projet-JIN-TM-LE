@@ -42,15 +42,21 @@ void GameManager::update(sf::Time elapsedTime)
 	panel.test();
 	player.getBody()->SetGravityScale(1);
 
+	if (player.getCoordinates().y < -300 ) {
+		if (victory.getStatus()==sf::Sound::Stopped)
+			victory.play();
+	}
+	printf("%d\n", shoulddie);
+	b2Vec2 vel = player.getVelocity();
 	switch (surface)
 	{
 	case SurfaceType::DRY:
 
 
-		b2Vec2 vel = player.getVelocity();
+		
 
 		if (vel.x == 0 && vel.y == 0) {
-			if (lastSurface != SurfaceType::DRY && death[soundState].getStatus() == sf::Sound::Stopped) {
+			if ( death[soundState].getStatus() == sf::Sound::Stopped) {
 				death[soundState].play();
 
 			}
@@ -74,13 +80,12 @@ void GameManager::update(sf::Time elapsedTime)
 			displayTime = 0;
 			player.testTeleport(10, -0.5);
 
-			
 			break;
 		}
 		break;
 
 	case SurfaceType::SWIMMABLE:
-
+		shoulddie = 0;
 		if (lastSurface != SurfaceType::SWIMMABLE && splurch[soundState].getStatus() == sf::Sound::Stopped) {
 			splurch[soundState].play();
 
@@ -108,6 +113,21 @@ void GameManager::update(sf::Time elapsedTime)
 
 	case SurfaceType::TOUCHABLE:
 
+
+		if (vel.x == 0 && vel.y == 0) {
+			shoulddie++;
+			
+		}
+		if (shoulddie > 60) {
+			if (lastSurface != SurfaceType::DRY && death[soundState].getStatus() == sf::Sound::Stopped) {
+				death[soundState].play();
+
+			}
+			player.testTeleport(10, -0.5);
+			
+			shoulddie = 0;
+			
+		}
 		if (lastSurface != SurfaceType::TOUCHABLE && bump.getStatus() == sf::Sound::Stopped) {
 			bump.play();
 		}
@@ -132,7 +152,7 @@ void GameManager::render()
 	panel.render(window);
 	player.render(window);
 	b2Vec2 pos = player.getCoordinates();
-	view.setCenter(12.5, pos.y);
+	view.setCenter(10, pos.y);
 
 	window.setView(view);
 

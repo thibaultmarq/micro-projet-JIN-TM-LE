@@ -30,6 +30,8 @@ private:
 	bool jump{ false };
 
 	float displayTime = 3;
+	int shoulddie = 0;
+
 
 	static const float playerSpeed;
 

@@ -1,11 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Level>
-	<S x="-2" y= "-1000" h= "5" w="1000" type="TOUCH"/>
-	<S x="22" y="-1000" h="5" w="1000" type="TOUCH"/>
+	<S x="-4.5" y= "-1000" h= "5" w="1000" type="TOUCH"/>
+	<S x="19.5" y="-1000" h="5" w="1000" type="TOUCH"/>
 	<S x="0" y="0" h="25" w="25" type="SWIM"/>
 	
-
-	<S x="5" y="-10" h="5" w="5" type="DRY"/>
-	<M x="5" y="-20" h="5" w="5" mx="15" my="-30" type ="DRY"/>
+	<S x="0" y="-10" h="5" w="5" type="SWIM"/>
+	<M x="5" y="-20" h="5" w="5" mx="15" my="-30" type ="SWIM"/>
+	<S x="10" y="-25" h="10" w="10" type="Dry"/>
+	<S x="12" y="-25" h="5" w="4" type="SWIM"/>
+	<S x="0" y="-35" h="5" w="5" type="SWIM"/>
+	<S x="0" y="-60" h="2" w="20" type="SWIM"/>
+	<S x="10" y="-80" h="10" w="5" type="SWIM"/>
+	<S x="10" y="-70" h="10" w="5" type="DRY"/>
+	<S x="0" y="-90" h="10" w="5" type="SWIM"/>
+	<S x="15" y="-100" h="5" w="5" type="SWIM"/>
+	<S x="0" y="-110" h="5" w="5" type="SWIM"/>
+	<S x="7.5" y="-120" h="5" w="5" type="SWIM"/>
+	<S x="15" y="-130" h="10" w="5" type="SWIM"/>
+	<S x="0" y="-140" h="10" w="10" type="Dry"/>
+	<S x="10" y="-140" h="2" w="10" type="SWIM"/>
+	<S x="0" y="-155" h="2" w="10" type="SWIM"/>
+	<S x="18" y="-165" h="2" w="10" type="SWIM"/>
+	<M x="0" y="-180" h="5" w="5" mx="20" my="-180" type ="DRY"/>
+	<M x="0" y="-180" h="2" w="10" mx="0" my="-200" type ="SWIM"/>
+	<S x="5" y="-200" h="20" w="5" type="DRY"/>
+	<S x="6" y="-200" h="12" w="2" type="SWIM"/>
+	<S x="6" y="-210" h="2" w="2" type="SWIM"/>
+	<S x="0" y="-215" h="2" w="3" type="SWIM"/>
+	<S x="18" y="-220" h="2" w="3" type="SWIM"/>
+	<M x="10" y="-215" h="2" w="2" mx="10" my="-225" type ="DRY"/>
+	<M x="0" y="-230" h="2" w="10" mx="0" my="-250" type ="SWIM"/>
+	<S x="5" y="-270" h="20" w="5" type="SWIM"/>
+	<M x="9" y="-280" h="2" w="2" mx="9" my="-310" type ="SWIM"/>
 
 </Level>
