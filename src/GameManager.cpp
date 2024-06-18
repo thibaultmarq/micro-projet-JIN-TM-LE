@@ -45,6 +45,22 @@ void GameManager::update(sf::Time elapsedTime)
 	if (player.getCoordinates().y < -300 ) {
 		if (victory.getStatus()==sf::Sound::Stopped)
 			victory.play();
+		save.addScore(-player.getCoordinates().y);
+
+		std::string res = "Best scores :\n";
+		std::vector<float> scores = save.getScores();
+
+		for (auto const& score : scores) {
+
+			res.append(std::to_string(score));
+			res.append("\n");
+
+		}
+
+		scoreText.setString(res);
+
+		displayTime = 0;
+		player.testTeleport(10, -0.5);
 	}
 	printf("%d\n", shoulddie);
 	b2Vec2 vel = player.getVelocity();
@@ -72,8 +88,6 @@ void GameManager::update(sf::Time elapsedTime)
 				res.append("\n");
 
 			}
-
-			printf(res.c_str());
 
 			scoreText.setString(res);
 
@@ -123,6 +137,22 @@ void GameManager::update(sf::Time elapsedTime)
 				death[soundState].play();
 
 			}
+			float y = player.getCoordinates().y;
+			save.addScore(-y);
+
+			std::string res = "Best scores :\n";
+			std::vector<float> scores = save.getScores();
+
+			for (auto const& score : scores) {
+
+				res.append(std::to_string(score));
+				res.append("\n");
+
+			}
+
+			scoreText.setString(res);
+
+			displayTime = 0;
 			player.testTeleport(10, -0.5);
 			
 			shoulddie = 0;
