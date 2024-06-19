@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "player.h"
+#include "Player.h"
 #include "pugixml.hpp"
 #include "StaticSurface.h"
 #include "MovingSurface.h"
