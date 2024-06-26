@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include "Command.h"
 #include <set>
+#include <EnemyCollection.h>
 
 class GameManager {
 private:
@@ -18,13 +19,14 @@ private:
 
 	Player player{ &world };
 	Panel panel;
+	EnemyCollection enemies;
 
 	SurfaceType lastSurface = SurfaceType::VOID;
 
 	std::unordered_map < sf::Keyboard::Key, std::unique_ptr<Command>> commandMap;
 
 	
-	std::set<sf::Keyboard::Key> inputList;
+	//std::set<sf::Keyboard::Key> inputList;
 	bool left{ false };
 	bool right{ false };
 	bool jump{ false };

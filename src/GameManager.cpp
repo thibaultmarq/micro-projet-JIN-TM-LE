@@ -181,6 +181,7 @@ void GameManager::render()
 	
 	panel.render(window);
 	player.render(window);
+	enemies.render(window);
 	b2Vec2 pos = player.getCoordinates();
 	view.setCenter(10, pos.y);
 
@@ -248,6 +249,16 @@ void GameManager::run()
 		return ;
 	}
 	panel= Panel{ doc.child("Level"), world};
+
+
+	pugi::xml_document enemy_doc;
+	result = enemy_doc.load_file("resources/enemy.xml");
+	if (!result) {
+		std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+		return;
+	}
+
+	enemies = EnemyCollection{ doc.child("Enemy"),world };
 
 
 	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
