@@ -38,6 +38,15 @@ void GameManager::processEvents()
 
 void GameManager::update(sf::Time elapsedTime)
 {	
+
+	if (enemies.playerContact(&player)) {
+		if (death[soundState].getStatus() == sf::Sound::Stopped) {
+			death[soundState].play();
+		}
+		player.getBody()->SetLinearVelocity(b2Vec2(0, 0));
+		player.testTeleport(10, -0.5);
+	}
+
 	SurfaceType surface = panel.checkPlayerTouch(&player);
 	panel.test();
 	enemies.update();
@@ -61,6 +70,7 @@ void GameManager::update(sf::Time elapsedTime)
 		scoreText.setString(res);
 
 		displayTime = 0;
+		player.getBody()->SetLinearVelocity(b2Vec2(0, 0));
 		player.testTeleport(10, -0.5);
 	}
 
@@ -94,6 +104,7 @@ void GameManager::update(sf::Time elapsedTime)
 			scoreText.setString(res);
 
 			displayTime = 0;
+			player.getBody()->SetLinearVelocity(b2Vec2(0, 0));
 			player.testTeleport(10, -0.5);
 
 			break;
@@ -155,6 +166,7 @@ void GameManager::update(sf::Time elapsedTime)
 			scoreText.setString(res);
 
 			displayTime = 0;
+			player.getBody()->SetLinearVelocity(b2Vec2(0, 0));
 			player.testTeleport(10, -0.5);
 			
 			shoulddie = 0;
