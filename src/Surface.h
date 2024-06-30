@@ -14,7 +14,7 @@ public:
 	explicit Surface( float h, float w, SurfaceType surfaceType);
 	virtual ~Surface() = default;
 
-
+	virtual void changeDirection();
 
 	void render(sf::RenderTarget& window);
 	SurfaceType getType() const;

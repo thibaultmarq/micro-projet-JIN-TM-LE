@@ -40,3 +40,7 @@ SurfaceType Surface::getType() const {
 sf::RectangleShape Surface::getTarget() const {
 	return target;
 }
+
+void Surface::changeDirection() {
+	//will be overriden
+}

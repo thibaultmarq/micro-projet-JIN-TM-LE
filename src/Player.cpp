@@ -19,7 +19,13 @@ Player::Player(b2World* world)
 	fixtureDef.friction = 0.3f;
 	playerBody->CreateFixture(&fixtureDef);
 
-
+	
+	if (!texture.loadFromFile("resources/sprite.gif"))
+	{
+		printf("ça marche pas");
+		// error...
+	}
+	target.setTexture(&texture, true);
 	target.setPosition(sf::Vector2f(5,5));
 	target.setRadius(0.5f);
 	target.setFillColor(sf::Color::White);

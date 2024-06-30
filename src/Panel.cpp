@@ -31,9 +31,9 @@ Panel::Panel(const pugi::xml_node& node, b2World& world) {
 
 void Panel::test() {
 	for (auto const& surf : level) {
-		if (dynamic_cast<MovingSurface*>(surf.get())) {
-			static_cast<MovingSurface*>(surf.get())->changeDirection();
-		}
+
+			surf->changeDirection();
+
 	}
 	
 }
@@ -68,8 +68,7 @@ void Panel::addStaticBlock(float x, float y, float h, float w, SurfaceType surfa
 
 		addSurface(x, y, h, w, SurfaceType::TOUCHABLE, world);
 		addSurface(x, y, h, thickness, surfaceType, world);
-		//AddSurface(x, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
-		//AddSurface(x + h + thickness, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
+
 
 	}
 }
@@ -87,8 +86,7 @@ void Panel::addMovingBlock(b2Vec2 coord, b2Vec2 maxCoord, b2Vec2 size, SurfaceTy
 
 		addSurface(coord, maxCoord,size, SurfaceType::TOUCHABLE, world);
 		addSurface(coord, maxCoord, b2Vec2(size.x,thickness), surfaceType, world);
-		//AddSurface(x, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
-		//AddSurface(x + h + thickness, y + thickness, -thickness, -thickness, SurfaceType::TOUCHABLE, world);
+
 
 	}
 }
@@ -116,17 +114,7 @@ SurfaceType Panel::checkPlayerTouch( Player* player) const {
 
 			{
 				return c->getType();
-			}/*
-			if (res == SurfaceType::VOID) {
-
-				res = c.getType();
 			}
-			else if (res == SurfaceType::DRY) {
-				res = c.getType();
-			}
-			if (c.getType() == SurfaceType::DRY) {
-				printf("salut\n");
-			}*/
 			res = c->getType();
 			
 		}

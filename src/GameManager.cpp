@@ -62,16 +62,17 @@ void GameManager::update(sf::Time elapsedTime)
 		displayTime = 0;
 		player.testTeleport(10, -0.5);
 	}
-	printf("%d\n", shoulddie);
+
 	b2Vec2 vel = player.getVelocity();
 	switch (surface)
 	{
 	case SurfaceType::DRY:
 
+		if (vel.x == 0 || vel.y == 0) {
+			shoulddie++;
 
-		
-
-		if (vel.x == 0 && vel.y == 0) {
+		}
+		if (shoulddie > 60) {
 			if ( death[soundState].getStatus() == sf::Sound::Stopped) {
 				death[soundState].play();
 
@@ -219,102 +220,103 @@ void GameManager::handleInputs(sf::Keyboard::Key key, bool keyState)
 
 void GameManager::run()
 {
-
-	sf::Font font;
-	font.loadFromFile("resources/arial.ttf");
-	scoreText.setFont(font);
-	scoreText.setFillColor(sf::Color::Blue);
-	scoreText.setCharacterSize(10);
-	scoreText.setScale(sf::Vector2f(0.1f, 0.1f));
-	scoreText.setPosition(5, -10);
-
-	window.setVerticalSyncEnabled(true);
-	window.setFramerateLimit(60);
-	sf::Clock clock;
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-
-	view.setSize(20,20);
-
-	commandMap[sf::Keyboard::Q] = std::make_unique<MoveLeftCommand>();
-	commandMap[sf::Keyboard::D] = std::make_unique<MoveRightCommand>();
-	commandMap[sf::Keyboard::Z] = std::make_unique<JumpCommand>();
-	commandMap[sf::Keyboard::Space] = std::make_unique<JumpCommand>();
-	
-	pugi::xml_document doc;
-	auto result = doc.load_file("resources/level.xml");
-	if ( !result)
 	{
-		std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
-		return ;
-	}
-	panel= Panel{ doc.child("Level"), world};
 
+		sf::Font font;
+		font.loadFromFile("resources/arial.ttf");
+		scoreText.setFont(font);
+		scoreText.setFillColor(sf::Color::Blue);
+		scoreText.setCharacterSize(10);
+		scoreText.setScale(sf::Vector2f(0.1f, 0.1f));
+		scoreText.setPosition(5, -10);
 
-	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
-	sf::SoundBuffer bufferBump;
-	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferDeath;
-	sf::SoundBuffer bufferVictory;
-	
-	if (!bufferSplurch.first.loadFromFile("resources/splurch1.mp3")) {
-		printf("Splurch didn't load !\n");
-		window.close();
-	}
-	if (!bufferSplurch.second.loadFromFile("resources/splurch2.mp3")) {
-		printf("Splurch didn't load !\n");
-		window.close();
-	}
-	splurch[0].setBuffer(bufferSplurch.first);
-	splurch[0].setVolume(50);
+		window.setVerticalSyncEnabled(true);
+		window.setFramerateLimit(60);
+		sf::Clock clock;
+		sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	splurch[1].setBuffer(bufferSplurch.second);
-	splurch[1].setVolume(30);
+		view.setSize(20, 20);
 
-	if (!bufferBump.loadFromFile("resources/bump.mp3")) {
-		printf("Bump didn't load !\n");
-		window.close();
-	}
-	bump.setBuffer(bufferBump);
-	bump.setVolume(30);
+		commandMap[sf::Keyboard::Q] = std::make_unique<MoveLeftCommand>();
+		commandMap[sf::Keyboard::D] = std::make_unique<MoveRightCommand>();
+		commandMap[sf::Keyboard::Z] = std::make_unique<JumpCommand>();
+		commandMap[sf::Keyboard::Space] = std::make_unique<JumpCommand>();
 
-	if (!bufferDeath.first.loadFromFile("resources/death1.mp3")) {
-		printf("Death didn't load !\n");
-		window.close();
-	}
-	if (!bufferDeath.second.loadFromFile("resources/death2.mp3")) {
-		printf("Death didn't load !\n");
-		window.close();
-	}
-	
-	death[0].setBuffer(bufferDeath.first);
-	death[0].setVolume(30);
-	death[1].setBuffer(bufferDeath.second);
-
-
-	if (!bufferVictory.loadFromFile("resources/victory.mp3")) {
-		printf("Victory didn't load !\n");
-		window.close();
-	}
-
-	victory.setBuffer(bufferVictory);
-	
-
-
-	while (window.isOpen()) {
-
-		sf::Time elapsedTime = clock.restart();
-		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > TimePerFrame)
+		pugi::xml_document doc;
+		auto result = doc.load_file("resources/level.xml");
+		if (!result)
 		{
-			timeSinceLastUpdate -= TimePerFrame;
+			std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+			return;
+		}
+		panel = Panel{ doc.child("Level"), world };
 
-			processEvents();
-			update(timeSinceLastUpdate);
-			world.Step(TimePerFrame.asSeconds(), 6, 2);
+
+		std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
+		sf::SoundBuffer bufferBump;
+		std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferDeath;
+		sf::SoundBuffer bufferVictory;
+
+		if (!bufferSplurch.first.loadFromFile("resources/splurch1.mp3")) {
+			printf("Splurch didn't load !\n");
+			window.close();
+		}
+		if (!bufferSplurch.second.loadFromFile("resources/splurch2.mp3")) {
+			printf("Splurch didn't load !\n");
+			window.close();
+		}
+		splurch[0].setBuffer(bufferSplurch.first);
+		splurch[0].setVolume(50);
+
+		splurch[1].setBuffer(bufferSplurch.second);
+		splurch[1].setVolume(30);
+
+		if (!bufferBump.loadFromFile("resources/bump.mp3")) {
+			printf("Bump didn't load !\n");
+			window.close();
+		}
+		bump.setBuffer(bufferBump);
+		bump.setVolume(30);
+
+		if (!bufferDeath.first.loadFromFile("resources/death1.mp3")) {
+			printf("Death didn't load !\n");
+			window.close();
+		}
+		if (!bufferDeath.second.loadFromFile("resources/death2.mp3")) {
+			printf("Death didn't load !\n");
+			window.close();
 		}
 
-		render();
+		death[0].setBuffer(bufferDeath.first);
+		death[0].setVolume(30);
+		death[1].setBuffer(bufferDeath.second);
+
+
+		if (!bufferVictory.loadFromFile("resources/victory.mp3")) {
+			printf("Victory didn't load !\n");
+			window.close();
+		}
+
+		victory.setBuffer(bufferVictory);
+
+
+
+		while (window.isOpen()) {
+
+			sf::Time elapsedTime = clock.restart();
+			timeSinceLastUpdate += elapsedTime;
+			while (timeSinceLastUpdate > TimePerFrame)
+			{
+				timeSinceLastUpdate -= TimePerFrame;
+
+				processEvents();
+				update(timeSinceLastUpdate);
+				world.Step(TimePerFrame.asSeconds(), 6, 2);
+			}
+
+			render();
+
+		}
 
 	}
-
 }
-
