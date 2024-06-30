@@ -38,8 +38,17 @@ void EnemyCollection::render(sf::RenderWindow& window) const
 }
 
 
-bool EnemyCollection::playerContact(Player* player)
+bool EnemyCollection::playerContact(Player* player) const
 {
+	for (auto const& enemy : enemies) {
+
+		b2ContactEdge const* contactList = enemy->getBody()->GetContactList();
+
+		if (contactList != nullptr && contactList->other == player->getBody()) {
+				return true;
+
+		}
+	}
 	return false;
 }
 
