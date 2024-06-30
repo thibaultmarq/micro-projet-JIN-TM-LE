@@ -17,6 +17,7 @@ Bullet::Bullet(b2Vec2 position, b2Vec2 direction, b2World& world) : Enemy{ posit
 }
 
 void Bullet::act() {
-	printf("wait)");
 	//
 }
+
+

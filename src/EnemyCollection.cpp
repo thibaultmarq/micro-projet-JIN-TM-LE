@@ -42,9 +42,8 @@ bool EnemyCollection::playerContact(Player* player) const
 {
 	for (auto const& enemy : enemies) {
 
-		b2ContactEdge const* contactList = enemy->getBody()->GetContactList();
 
-		if (contactList != nullptr && contactList->other == player->getBody()) {
+		if (enemy->getPlayerContact(player)) {
 				return true;
 
 		}

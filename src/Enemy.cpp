@@ -34,3 +34,13 @@ void Enemy::render(sf::RenderWindow& window)
 b2Body* Enemy::getBody() {
 	return enemyBody;
 }
+
+bool Enemy::getPlayerContact(Player* player) {
+
+	b2ContactEdge const* contactList = enemyBody->GetContactList();
+
+	if (contactList != nullptr && contactList->other == player->getBody()) {
+		return true;
+
+	}
+}

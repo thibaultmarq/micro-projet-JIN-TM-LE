@@ -19,9 +19,20 @@ void Mycose::act()
 	frameBeforeNextSpawn--;
 	if (frameBeforeNextSpawn < 0) {
 		frameBeforeNextSpawn = 300;
-		b2Vec2 position = enemyBody->GetPosition();
+		direction.Normalize();
+		direction *= size;
+		b2Vec2 position = enemyBody->GetPosition() + direction;
 
 		bullets.push_back(make_unique<Bullet>(position, direction, world));
+	}
+	for (auto const& child : bullets) { // voir getPlayerContact: on n'arrive pas à faire en sorte de les détruires quand ils touchent des murs, donc on doit hardcoder
+		if (child->getBody()->GetPosition().x < 0 || child->getBody()->GetPosition().x > 30 || child->getBody()->GetPosition().y < -20 || child->getBody()->GetPosition().y > 350) {
+			auto it = ranges::find(bullets.begin(), bullets.end(),child);
+			if (it != bullets.end()) {
+				bullets.erase(it);
+				break;
+			}
+		}
 	}
 
 }
@@ -34,4 +45,40 @@ void Mycose::render(sf::RenderWindow& window) {
 	for (auto const& child : bullets) {
 		child->render(window);
 	}
+}
+
+bool Mycose::getPlayerContact(Player* player) {
+
+
+	for (auto const& child : bullets) {
+		b2ContactEdge const* contactList = child->getBody()->GetContactList();
+
+		if (contactList != nullptr && contactList->other == player->getBody()) {
+			auto it = ranges::find(bullets.begin(), bullets.end(),
+				child);
+			if (it != bullets.end()) {
+				bullets.erase(it);
+			}
+			return true;
+
+		}
+
+		if (contactList != nullptr) { // Ce bout de code de fonctionne pas: la contactlist est vide même lorsqu'un mur est touché, et on ne comprend pas pourquoi
+			auto it = ranges::find(bullets.begin(), bullets.end(),
+				child);
+
+			if (it != bullets.end()) {
+				bullets.erase(it);
+			}
+		}
+	}
+	b2ContactEdge const* contactList = enemyBody->GetContactList();
+
+	if (contactList != nullptr && contactList->other == player->getBody()) {
+		return true;
+
+	}
+	return false;
+
+
 }
