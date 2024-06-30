@@ -18,7 +18,8 @@ Spermicide::Spermicide(float x, float y, float endx, float endy, float spd, b2Wo
 void Spermicide::act()
 {
 	b2Vec2 pos = enemyBody->GetPosition();
-	if ( pos == end || pos == start) {
+
+	if (abs(end.x - start.x) - abs(end.x - pos.x ) < 0 || abs(end.y - start.y) - abs(end.y - pos.y) < 0) {
 		direction *= -1;
 		enemyBody->SetLinearVelocity(direction);
 	}

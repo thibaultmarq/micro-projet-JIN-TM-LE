@@ -11,7 +11,7 @@ Bullet::Bullet(b2Vec2 position, b2Vec2 direction, b2World& world) : Enemy{positi
 
 	body->SetLinearVelocity(direction);
 	float size = 0.2f;
-	target.setPosition(sf::Vector2f(body->GetPosition().x - size / 2, body->GetPosition().y - size / 2));
+	target.setPosition(sf::Vector2f(position.x - size / 2,position.y - size / 2));
 	target.setRadius(size);
 
 	target.setFillColor(sf::Color::Blue);

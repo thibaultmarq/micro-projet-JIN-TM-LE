@@ -40,6 +40,7 @@ void GameManager::update(sf::Time elapsedTime)
 {	
 	SurfaceType surface = panel.checkPlayerTouch(&player);
 	panel.test();
+	enemies.update();
 	player.getBody()->SetGravityScale(1);
 
 	if (player.getCoordinates().y < -300 ) {

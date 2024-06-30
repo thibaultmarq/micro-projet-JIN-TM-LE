@@ -27,5 +27,7 @@ Enemy::Enemy(float x, float y, b2World& world)
 
 void Enemy::render(sf::RenderWindow& window)
 {
+	b2Vec2 pos = enemyBody->GetPosition();
+	target.setPosition(pos.x, pos.y);
 	window.draw(target);
 }
