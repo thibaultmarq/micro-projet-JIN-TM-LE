@@ -17,6 +17,12 @@ Enemy::Enemy(float x, float y, b2World& world)
 	fixtureDef.friction = 0.3f;
 	enemyBody->CreateFixture(&fixtureDef);
 
+	float size = 2;
+
+	target.setPosition(sf::Vector2f(enemyBody->GetPosition().x - size / 2, enemyBody->GetPosition().y - size / 2));
+	target.setRadius(size);
+
+
 }
 
 void Enemy::render(sf::RenderWindow& window)

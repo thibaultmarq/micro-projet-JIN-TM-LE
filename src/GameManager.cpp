@@ -247,7 +247,7 @@ void GameManager::run()
 		auto result = doc.load_file("resources/level.xml");
 		if (!result)
 		{
-			std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+			std::cerr << "Could not open file level.xml because " << result.description() << std::endl;
 			return;
 		}
 		panel = Panel{ doc.child("Level"), world };
@@ -256,11 +256,11 @@ void GameManager::run()
 	pugi::xml_document enemy_doc;
 	result = enemy_doc.load_file("resources/enemy.xml");
 	if (!result) {
-		std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+		std::cerr << "Could not open file enemy.xml because " << result.description() << std::endl;
 		return;
 	}
 
-	enemies = EnemyCollection{ doc.child("Enemy"),world };
+	enemies = EnemyCollection{ enemy_doc.child("Enemy"),world };
 
 
 	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;

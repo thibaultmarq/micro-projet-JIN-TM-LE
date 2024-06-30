@@ -15,7 +15,7 @@ Spermicide::Spermicide(float x, float y, float endx, float endy, float spd, b2Wo
 	target.setFillColor(sf::Color::Green);
 }
 
-void Spermicide::move()
+void Spermicide::act()
 {
 	b2Vec2 pos = enemyBody->GetPosition();
 	if ( pos == end || pos == start) {

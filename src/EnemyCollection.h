@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <Player.h>
 #include <Enemy.h>
+#include "Mycose.h"
 
 class EnemyCollection {
 

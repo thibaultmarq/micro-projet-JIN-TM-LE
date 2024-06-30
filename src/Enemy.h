@@ -14,7 +14,7 @@ public:
 
 	explicit Enemy(float x, float y, b2World& world);
 	virtual void render(sf::RenderWindow& window);
-	virtual void move() = 0;
+	virtual void act()=0;
 	virtual ~Enemy() = default;
 
 
