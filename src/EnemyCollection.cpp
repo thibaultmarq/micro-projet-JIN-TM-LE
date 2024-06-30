@@ -18,9 +18,10 @@ EnemyCollection::EnemyCollection(const pugi::xml_node& node, b2World& world)
 			enemies.push_back(make_unique<Spermicide>(x,y,endx,endy,speed,world));
 		}
 		else {
-			float endx = child.attribute("endx").as_float();
-			float endy = child.attribute("endy").as_float();
-			b2Vec2 direction = b2Vec2(endx, endy) - b2Vec2(x, y);
+
+			float dirx = child.attribute("dirx").as_float();
+			float diry = child.attribute("diry").as_float();
+			auto direction = b2Vec2(dirx, diry);
 			float speed = child.attribute("speed").as_float();
 			enemies.push_back(make_unique<Mycose>(x, y, speed, direction, world));
 		}

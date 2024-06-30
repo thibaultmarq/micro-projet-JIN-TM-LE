@@ -3,6 +3,7 @@
 
 	<Mycose x="18" y="-5" endx="15" endy="-5" speed="2"/>
 	<Spermicide x="12" y="-5" endx="14" endy="-8" speed="2"/>
+
 	
 	
 </Enemy>
