@@ -25,10 +25,9 @@ EnemyCollection::EnemyCollection(const pugi::xml_node& node, b2World& world)
 			enemies.push_back(make_unique<Mycose>(x, y, speed, direction, world));
 		}
 	}
-	
-
 
 }
+
 
 void EnemyCollection::render(sf::RenderWindow& window) const
 {
@@ -53,3 +52,5 @@ void EnemyCollection::update() const
 
 
 }
+
+

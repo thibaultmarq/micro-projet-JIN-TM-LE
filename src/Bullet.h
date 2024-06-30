@@ -9,7 +9,7 @@ public:
 	void act() override;
 
 private:
-	b2Body* body;
-	float speed = 1.;
+	float speed = 2.;
+	b2Vec2 direction;
 
 };

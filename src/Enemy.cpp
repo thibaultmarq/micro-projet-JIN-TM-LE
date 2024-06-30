@@ -31,3 +31,7 @@ void Enemy::render(sf::RenderWindow& window)
 	target.setPosition(pos.x, pos.y);
 	window.draw(target);
 }
+
+b2Body* Enemy::getBody() {
+	return enemyBody;
+}

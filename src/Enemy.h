@@ -16,6 +16,7 @@ public:
 	virtual void render(sf::RenderWindow& window);
 	virtual void act()=0;
 	virtual ~Enemy() = default;
+	b2Body* getBody();
 
 
 

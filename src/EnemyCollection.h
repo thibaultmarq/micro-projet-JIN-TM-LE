@@ -15,13 +15,14 @@ public:
 	EnemyCollection() = default;
 	EnemyCollection(const pugi::xml_node& node, b2World& world);
 	void render(sf::RenderWindow& window) const;
-	//void addEnemy(float x, float y, b2World& world);
+	//void addEnemy(Enemy enemy);
 	bool playerContact(Player* player);
 	void update() const;
 
 private:
 
 	std::vector<std::unique_ptr<Enemy>> enemies;
+
 
 
 };
