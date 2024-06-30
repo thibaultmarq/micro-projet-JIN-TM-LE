@@ -182,6 +182,7 @@ void GameManager::render()
 	
 	panel.render(window);
 	player.render(window);
+	enemies.render(window);
 	b2Vec2 pos = player.getCoordinates();
 	view.setCenter(10, pos.y);
 
@@ -252,21 +253,31 @@ void GameManager::run()
 		panel = Panel{ doc.child("Level"), world };
 
 
-		std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
-		sf::SoundBuffer bufferBump;
-		std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferDeath;
-		sf::SoundBuffer bufferVictory;
+	pugi::xml_document enemy_doc;
+	result = enemy_doc.load_file("resources/enemy.xml");
+	if (!result) {
+		std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+		return;
+	}
 
-		if (!bufferSplurch.first.loadFromFile("resources/splurch1.mp3")) {
-			printf("Splurch didn't load !\n");
-			window.close();
-		}
-		if (!bufferSplurch.second.loadFromFile("resources/splurch2.mp3")) {
-			printf("Splurch didn't load !\n");
-			window.close();
-		}
-		splurch[0].setBuffer(bufferSplurch.first);
-		splurch[0].setVolume(50);
+	enemies = EnemyCollection{ doc.child("Enemy"),world };
+
+
+	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferSplurch;
+	sf::SoundBuffer bufferBump;
+	std::pair<sf::SoundBuffer, sf::SoundBuffer> bufferDeath;
+	sf::SoundBuffer bufferVictory;
+	
+	if (!bufferSplurch.first.loadFromFile("resources/splurch1.mp3")) {
+		printf("Splurch didn't load !\n");
+		window.close();
+	}
+	if (!bufferSplurch.second.loadFromFile("resources/splurch2.mp3")) {
+		printf("Splurch didn't load !\n");
+		window.close();
+	}
+	splurch[0].setBuffer(bufferSplurch.first);
+	splurch[0].setVolume(50);
 
 		splurch[1].setBuffer(bufferSplurch.second);
 		splurch[1].setVolume(30);

@@ -25,6 +25,8 @@ else()
     FetchContent_MakeAvailable(sfml)
 endif()
 
+set(CMAKE_CXX_STANDARD 20)
+
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) # This cmake_policy avoids warning by cmake when we use pugixml
 FetchContent_Declare(
     pugixml

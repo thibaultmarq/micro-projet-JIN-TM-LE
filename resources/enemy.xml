@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Enemy>
+
+	<Spermicide x="10" y="-5" endx="14" endy="-7" speed="1"/>
+	
+	
+</Enemy>
