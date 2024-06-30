@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Enemy>
 
-	<Mycose x="18" y="-5" endx="15" endy="-5" speed="2"/>
+	<Mycose x="18" y="-5" dirx="-1" diry="0" speed="2"/>
 	<Spermicide x="12" y="-5" endx="14" endy="-8" speed="2"/>
 
 	
