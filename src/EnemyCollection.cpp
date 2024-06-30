@@ -20,7 +20,7 @@ EnemyCollection::EnemyCollection(const pugi::xml_node& node, b2World& world)
 		else {
 			float endx = child.attribute("endx").as_float();
 			float endy = child.attribute("endy").as_float();
-			b2Vec2 direction = b2Vec2(x, y) - b2Vec2(endx, endy);
+			b2Vec2 direction = b2Vec2(endx, endy) - b2Vec2(x, y);
 			float speed = child.attribute("speed").as_float();
 			enemies.push_back(make_unique<Mycose>(x, y, speed, direction, world));
 		}
