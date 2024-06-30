@@ -20,4 +20,4 @@ D : Aller à droite
 
 # Captures d'écran
 
-![Screenshot 1] (/doc/Screenshot1.PNG)
+![Screenshot 1](/doc/Screenshot1.PNG)
