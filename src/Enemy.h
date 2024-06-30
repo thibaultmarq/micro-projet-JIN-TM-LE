@@ -3,7 +3,7 @@
 #include "SFML/Graphics.hpp"
 
 
-class Enemy {
+class Enemy abstract{
 
 protected:
 	b2Body* enemyBody;
